@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Maker by Abo Nasser</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        input[type="text"], input[type="email"], input[type="tel"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CV Maker by Abo Nasser</h1>
+        
+        <form id="cvForm">
+            <h2>معلومات الاتصال</h2>
+            <input type="text" placeholder="الاسم الكامل" id="fullName" required>
+            <input type="text" placeholder="الوظيفة المرغوبة" id="desiredJob" required>
+            <input type="tel" placeholder="رقم الموبايل" id="phoneNumber" required>
+            <input type="email" placeholder="البريد الإلكتروني" id="email" required>
+            <input type="text" placeholder="العنوان" id="address" required>
+            <input type="text" placeholder="تفاصيل أخرى" id="otherDetails">
+
+            <h2>الخبرة العملية</h2>
+            <h3>المكان الأول</h3>
+            <input type="text" placeholder="اسم الشركة" id="company1">
+            <input type="text" placeholder="العنوان" id="jobAddress1">
+            <input type="text" placeholder="المسمى الوظيفي" id="jobTitle1">
+            <input type="text" placeholder="فترة العمل" id="workPeriod1">
+
+            <h3>المكان الثاني</h3>
+            <input type="text" placeholder="اسم الشركة" id="company2">
+            <input type="text" placeholder="العنوان" id="jobAddress2">
+            <input type="text" placeholder="المسمى الوظيفي" id="jobTitle2">
+            <input type="text" placeholder="فترة العمل" id="workPeriod2">
+
+            <h3>المكان الثالث</h3>
+            <input type="text" placeholder="اسم الشركة" id="company3">
+            <input type="text" placeholder="العنوان" id="jobAddress3">
+            <input type="text" placeholder="المسمى الوظيفي" id="jobTitle3">
+            <input type="text" placeholder="فترة العمل" id="workPeriod3">
+
+            <h3>أخرى</h3>
+            <input type="text" placeholder="اسم الشركة / العنوان / المسمى الوظيفي / فترة العمل" id="otherJob">
+
+            <h2>التعليم</h2>
+            <input type="text" placeholder="اسم الجامعة" id="university" required>
+            <input type="text" placeholder="الدرجة العلمية" id="degree" required>
+            <input type="text" placeholder="سنة التخرج" id="graduationYear" required>
+            <input type="text" placeholder="التقدير" id="grade" required>
+            <input type="text" placeholder="تفاصيل أخرى" id="otherEducation">
+
+            <h2>المهارات</h2>
+            <input type="text" placeholder="مهارات تقنية" id="technicalSkills">
+            <input type="text" placeholder="مهارات لغوية" id="languageSkills">
+            <input type="text" placeholder="مهارات شخصية" id="personalSkills">
+
+            <h2>الدورات</h2>
+            <h3>الدورة الأولى</h3>
+            <input type="text" placeholder="اسم الدورة" id="course1Name">
+            <input type="text" placeholder="الجهة المقدمة" id="course1Provider">
+            <input type="text" placeholder="المحتوى" id="course1Content">
+
+            <h3>الدورة الثانية</h3>
+            <input type="text" placeholder="اسم الدورة" id="course2Name">
+            <input type="text" placeholder="الجهة المقدمة" id="course2Provider">
+            <input type="text" placeholder="المحتوى" id="course2Content">
+
+            <h3>أخرى</h3>
+            <input type="text" placeholder="اسم الدورة / الجهة المقدمة / المحتوى" id="otherCourse">
+
+            <h2>معلومات إضافية</h2>
+            <input type="text" placeholder="إضافة 1" id="additional1">
+            <input type="text" placeholder="إضافة 2" id="additional2">
+            <input type="text" placeholder="إضافة 3" id="additional3">
+            <input type="text" placeholder="إضافة 4" id="additional4">
+            <input type="text" placeholder="إضافة 5" id="additional5">
+
+            <button type="button" onclick="createCV()">إنشاء</button>
+            <button type="button" onclick="sendToWhatsApp()">إرسال إلى WhatsApp</button>
+        </form>
+    </div>
+
+    <script>
+        function createCV() {
+            const formData = new FormData(document.getElementById('cvForm'));
+            let cvContent = '';
+            for (let [key, value] of formData.entries()) {
+                cvContent += `${key}: ${value}\n`;
+            }
+            
+            const blob = new Blob([cvContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cv.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function sendToWhatsApp() {
+            const formData = new FormData(document.getElementById('cvForm'));
+            let cvContent = '';
+            for (let [key, value] of formData.entries()) {
+                cvContent += `${key}: ${value}\n`;
+            }
+            
+            const phoneNumber = '00201060493712';
+            const encodedMessage = encodeURIComponent(cvContent);
+            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+            
+            fetch(whatsappURL, { mode: 'no-cors' })
+                .then(() => {
+                    window.open(whatsappURL, '_blank');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.');
+                });
+        }
+    </script>
+</body>
+</html>
